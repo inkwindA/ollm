@@ -1,0 +1,30 @@
+lora_knowledge_injection/
+├── data/
+│   ├── raw_pdfs/                 # 存放原始PDF文档
+│   ├── processed/                # 处理后的文本数据
+│   └── datasets/                 # 生成的训练数据集
+├── src/
+│   ├── pdf_processor.py          # PDF处理核心模块
+│   ├── data_generator.py         # 数据生成器
+│   ├── training/                 # 训练相关模块
+│   │   ├── configs/              # 训练配置文件
+│   │   └── trainer.py            # 训练器
+│   └── inference/                # 推理相关模块
+│       ├── inference.py          # 推理脚本
+│       └── prompts.py            # 提示词模板
+├── models/
+│   ├── base_model/               # 基础模型目录
+│   └── lora_weights/             # LoRA权重文件
+├── scripts/
+│   ├── train.sh                  # 训练脚本
+│   ├── inference.sh              # 推理脚本
+│   └── process_data.sh           # 数据处理脚本
+├── config/
+│   ├── training_config.yaml      # 训练配置
+│   └── inference_config.yaml     # 推理配置
+├── tests/
+│   ├── test_pdf_processor.py
+│   └── test_inference.py
+├── requirements.txt
+├── README.md
+└── main.py

@@ -1,0 +1,30 @@
+# 核心依赖
+torch>=2.0.0
+transformers>=4.35.0
+accelerate>=0.24.0
+peft>=0.7.0
+datasets>=2.14.0
+
+# PDF处理
+pymupdf>=1.23.0
+pymupdf4llm>=0.1.0
+
+# 数据处理和工具
+numpy>=1.24.0
+pandas>=2.0.0
+tqdm>=4.65.0
+
+# 配置和日志
+pyyaml>=6.0
+colorlog>=6.7.0
+
+# 开发工具
+black>=23.0.0
+flake8>=6.0.0
+pytest>=7.4.0
+
+# LLaMA-Factory相关（通过脚本安装）
+# git+https://github.com/hiyouga/LLaMA-Factory.git
+
+# 可选：通用数据集（如需要混合Alpaca_zh等）
+# 可以通过huggingface datasets库加载

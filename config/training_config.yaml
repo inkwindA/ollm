@@ -1,0 +1,82 @@
+# LLaMA-Factory 训练配置文件
+# 针对"纯LoRA知识注入"项目优化
+# 硬件：单卡 NVIDIA RTX 4090 (24GB)
+
+# 基础模型配置
+model_name_or_path: Qwen/Qwen3-8B-Instruct
+model_revision: main
+
+# 数据集配置
+dataset: custom_dataset
+dataset_dir: data/datasets
+template: qwen3
+finetuning_type: lora
+
+# LoRA 配置 - 针对Qwen3-8B优化
+lora_target: q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj
+lora_rank: 128    # 针对8B模型优化的Rank
+lora_alpha: 256   # Alpha设置为Rank的2倍
+lora_dropout: 0.05
+lora_bias: none
+
+# 训练参数配置 - 针对RTX 3090 24GB优化
+output_dir: models/lora_weights
+overwrite_output_dir: true
+
+per_device_train_batch_size: 1     # 由于显存限制，使用小batch size
+gradient_accumulation_steps: 8     # 有效batch size = 1 * 8 = 8
+learning_rate: 1e-4               # 相对较高的学习率以加速收敛
+num_train_epochs: 5               # 针对8B模型优化的epoch数
+max_steps: -1
+lr_scheduler_type: cosine
+warmup_ratio: 0.03
+
+# 量化配置 - 4bit量化以适应24GB显存
+quantization_bit: 4
+quantization_type: nf4
+double_quantization: true
+quantized_device_map: auto
+
+# 优化器配置
+optim: adamw_torch
+weight_decay: 0.1
+adam_epsilon: 1e-8
+
+# 训练策略
+logging_steps: 10
+save_steps: 500
+eval_steps: 500
+evaluation_strategy: steps
+load_best_model_at_end: true
+metric_for_best_model: loss
+greater_is_better: false
+
+# 数据预处理
+max_source_length: 2048
+max_target_length: 2048
+preprocessing_num_workers: 4
+max_samples: 100000
+
+# 内存优化
+ddp_timeout: 180000000
+ddp_find_unused_parameters: false
+dataloader_pin_memory: false
+
+# 其他配置
+fp16: true
+seed: 42
+ddp_backend: nccl
+report_to: none
+
+# 特殊配置 - 针对知识注入任务
+do_train: true
+do_eval: true
+predict_with_generate: false
+overwrite_cache: true
+resume_from_checkpoint: null
+
+# 系统配置
+disable_tqdm: false
+logging_dir: ./logs
+logging_first_step: true
+logging_nan_inf_filter: false
